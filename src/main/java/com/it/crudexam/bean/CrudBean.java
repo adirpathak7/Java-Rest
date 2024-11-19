@@ -18,7 +18,6 @@ import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.Entity;
 import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Request;
 import javax.ws.rs.core.Response;
 
 /**
@@ -38,38 +37,36 @@ public class CrudBean implements Serializable {
     private String name;
     private String password;
     private String date;
-    private String addData;
 
     public CrudBean() {
         group1 = new Group1();
     }
 
     public String addData() {
+
+//        if you are using EJB so un-comment bellow line and comment from line 50 -72
 //        this.group1Facade.create(group1);
         System.out.println("    hello from addData");
         Client client = ClientBuilder.newClient();
         WebTarget target = client.target("http://localhost:8080/CRUDExam/app/rest/add");
 
-//        if (addData != null && !addData.isEmpty()) {
-            group1 = new Group1();
-            group1.setName(name);
-            group1.setDate(date);
-            group1.setPassword(password);
+        group1 = new Group1();
+        group1.setName(name);
+        group1.setDate(date);
+        group1.setPassword(password);
 
-            System.out.println("name is: " + name);
-            Response response = target.request(MediaType.APPLICATION_JSON)
-                    .post(Entity.entity(group1, MediaType.APPLICATION_JSON));
+        System.out.println("name is: " + name);
+        Response response = target.request(MediaType.APPLICATION_JSON)
+                .post(Entity.entity(group1, MediaType.APPLICATION_JSON));
 
-            if (response.getStatus() == 201) {
-                System.out.println("Student inserted successfully!");
-//                fetchAllData();
-            } else {
-                System.out.println("Error inserting student: " + response.getStatus());
-            }
+        if (response.getStatus() == 201) {
+            System.out.println("Student inserted successfully!");
+        } else {
+            System.out.println("Error inserting student: " + response.getStatus());
+        }
 
-            response.close();
-            client.close();
-//        }
+        response.close();
+        client.close();
 
         this.name = "";
         this.date = "";
