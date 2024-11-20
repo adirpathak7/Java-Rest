@@ -30,9 +30,6 @@ public class JakartaEE8Resource {
     @Inject
     private Group1Facade abstratFaced;
 
-    @Inject
-    private CrudBean crudBean;
-
     @GET
     @Path("/hello")
 
@@ -43,19 +40,21 @@ public class JakartaEE8Resource {
     @POST
     @Path("/add")
     public Response addData(Group1 group1) {
+        if (group1 == null || group1.getName() == null || group1.getDate() == null || group1.getPassword() == null) {
+            return Response.status(Response.Status.BAD_REQUEST).entity("Invalid input").build();
+        }
+
         Group1 newGroup = abstratFaced.create(group1);
         return Response.status(Response.Status.CREATED).entity(newGroup).build();
     }
 
     @PUT
-    @Path("updateData/{id}")
+    @Path("/updateData/{id}")
     public Response updateData(@PathParam("id") int id, Group1 group1) {
         Group1 existGroup1 = abstratFaced.find(id);
-        System.out.println("in the rest");
         if (existGroup1 == null) {
             return Response.status(Response.Status.NOT_FOUND).entity("Data not found!").build();
         }
-        System.out.println("in the rest " + existGroup1.getName());
         existGroup1.setName(group1.getName());
         existGroup1.setDate(group1.getDate());
         existGroup1.setPassword(group1.getPassword());
@@ -65,20 +64,18 @@ public class JakartaEE8Resource {
     }
 
     @DELETE
-    @Path("deleteData/{id}")
+    @Path("/deleteData/{id}")
     public Response deleteData(@PathParam("id") int id) {
         Group1 existGroup1 = abstratFaced.find(id);
-        System.out.println("the id in rest is: " + id);
         if (existGroup1 == null) {
             return Response.status(Response.Status.NOT_FOUND).entity("Data not found!").build();
         }
-        System.out.println("the user in rest is: " + existGroup1);
         abstratFaced.remove(existGroup1);
         return Response.ok(existGroup1).build();
     }
 
     @GET
-    @Path("getAllData")
+    @Path("/getAllData")
     public Response getData() {
         List<Group1> allGroup1 = abstratFaced.findAll();
         return Response.ok((allGroup1)).build();

@@ -45,18 +45,14 @@ public class CrudBean implements Serializable {
     }
 
     public String addData() {
-
+        System.out.println("Name in Bean: " + group1.getName());
+        System.out.println("Date in Bean: " + group1.getDate());
+        System.out.println("Password in Bean: " + group1.getPassword());
 //        if you are using EJB so un-comment bellow line and comment from line 50 -72
 //        this.group1Facade.create(group1);
         Client client = ClientBuilder.newClient();
-        WebTarget target = client.target("http://localhost:8080/CRUDExam/app/rest/add");
+        WebTarget target = client.target("http://localhost:8080/CRUDExam/app/rest/add/");
 
-        group1 = new Group1();
-        group1.setName(name);
-        group1.setDate(date);
-        group1.setPassword(password);
-
-//        System.out.println("name is: " + name);
         Response response = target.request(MediaType.APPLICATION_JSON)
                 .post(Entity.entity(group1, MediaType.APPLICATION_JSON));
 
@@ -69,14 +65,11 @@ public class CrudBean implements Serializable {
         response.close();
         client.close();
 
-        this.name = "";
-        this.date = "";
-        this.password = "";
-        return "index";
+       this.group1 = new Group1();
+        return "Show.xhtml";
     }
 
     public String updateData() {
-//        this.group1Facade.edit(group1);
         System.out.println("in the bean ");
         System.out.println("the id in bean " + group1.getId());
         Client client = ClientBuilder.newClient();
@@ -99,7 +92,7 @@ public class CrudBean implements Serializable {
         this.name = "";
         this.date = "";
         this.password = "";
-        return "index";
+        return "Show.xhtml";
     }
 
     public String deleteData(int id) {
@@ -119,7 +112,7 @@ public class CrudBean implements Serializable {
         response.close();
         client.close();
 
-        return "index";
+        return "Show.xhtml";
     }
 
     public List<Group1> getData() {
@@ -152,8 +145,9 @@ public class CrudBean implements Serializable {
         return group1;
     }
 
-    public void setGroup1(Group1 group1) {
+    public String setGroup1(Group1 group1) {
         this.group1 = group1;
+        return "Update.xhtml";
     }
 
     public int getId() {

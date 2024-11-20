@@ -11,29 +11,25 @@
 
         <f:view>
             <h:form>
-                <h1><h:outputText value="Create/Edit"/></h1>
-                <h:panelGrid columns="2">
+                <h:outputLabel for="name" value="Name:" />
+                <h:inputText id="name" value="#{crudBean.group1.name}" />
 
-                    <h:outputLabel value="Name:" for="name" />
-                    <h:inputText id="name" value="#{crudBean.name}" required="true" requiredMessage="The Name field is required." />
+                <br/><br/>
+                <h:outputLabel for="date" value="Date:" />
+                <h:inputText id="date" value="#{crudBean.group1.date}" />
 
-                    <h:outputLabel value="Password:" for="password" />
-                    <h:inputText id="password" value="#{crudBean.password}" required="true" requiredMessage="The Password field is required." />
+                <br/><br/>
 
-                    <h:outputLabel value="Date:" for="date" />
-                    <h:inputText id="date" value="#{crudBean.date}" required="true" requiredMessage="The Date field is required." />
-
-                </h:panelGrid>
-                <h:commandButton action="#{crudBean.addData()}" value="Add"/>
+                <h:outputLabel for="password" value="Password:" />
+                <h:inputSecret id="password" value="#{crudBean.group1.password}" />
+                <br/><br/>
+                <h:commandButton value="Add Data" action="#{crudBean.addData}" />
             </h:form>
         </f:view>
 
-        <f:view>
-            <h:form>
-                <h:dataTable value="#{crudBean}" var="item">
-                </h:dataTable>
-            </h:form>
-        </f:view>
+        <br/><br/>
+
+        <a href="Show.xhtml">Display Data</a>
 
     </h:body>
 </html>
