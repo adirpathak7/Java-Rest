@@ -8,6 +8,7 @@ import com.it.crudexam.ejb.AbstractFacade;
 import com.it.crudexam.ejb.Group1Facade;
 import com.it.crudexam.entity.Group1;
 import java.io.Serializable;
+import java.util.List;
 import javax.ejb.EJB;
 import javax.inject.Named;
 import javax.enterprise.context.Dependent;
@@ -17,6 +18,7 @@ import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.Entity;
 import javax.ws.rs.client.WebTarget;
+import javax.ws.rs.core.GenericType;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
@@ -100,7 +102,44 @@ public class CrudBean implements Serializable {
         return "index";
     }
 
-    
+    public String deleteData(int id) {
+        System.out.println("in the bean the id is: " + id);
+        Client client = ClientBuilder.newClient();
+        WebTarget target = client.target("http://localhost:8080/CRUDExam/app/rest/deleteData/" + id);
+
+        Response response = target.request()
+                .delete();
+
+        if (response.getStatus() == 200) {
+            System.out.println("Data deletde successfully!");
+        } else {
+            System.out.println("Error deleteing data: " + response.getStatus());
+        }
+
+        response.close();
+        client.close();
+
+        return "index";
+    }
+
+    public List<Group1> getData() {
+        Client client = ClientBuilder.newClient();
+        WebTarget target = client.target("http://localhost:8080/CRUDExam/app/rest/getAllData");
+
+        Response response = target.request().get();
+
+        List<Group1> listData = null;
+        if (response.getStatus() == 200) {
+            listData = response.readEntity(new GenericType<List<Group1>>() {
+            });
+            System.out.println("Get the all data.");
+        } else {
+            System.out.println("Error geting all data " + response.getStatus());
+        }
+
+        return listData;
+    }
+
     public AbstractFacade getAbstractFacade() {
         return group1Facade;
     }
