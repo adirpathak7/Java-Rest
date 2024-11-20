@@ -57,8 +57,8 @@ public class Group1Facade extends AbstractFacade<Group1> {
     }
 
     @Override
-    public void edit(Group1 entity) {
-        super.edit(entity); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/OverriddenMethodBody
+    public Group1 edit(Group1 entity) {
+        return super.edit(entity); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/OverriddenMethodBody
     }
 
     @TransactionAttribute(TransactionAttributeType.REQUIRED)

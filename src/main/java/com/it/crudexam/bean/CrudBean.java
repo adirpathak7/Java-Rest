@@ -46,7 +46,6 @@ public class CrudBean implements Serializable {
 
 //        if you are using EJB so un-comment bellow line and comment from line 50 -72
 //        this.group1Facade.create(group1);
-        System.out.println("    hello from addData");
         Client client = ClientBuilder.newClient();
         WebTarget target = client.target("http://localhost:8080/CRUDExam/app/rest/add");
 
@@ -55,14 +54,14 @@ public class CrudBean implements Serializable {
         group1.setDate(date);
         group1.setPassword(password);
 
-        System.out.println("name is: " + name);
+//        System.out.println("name is: " + name);
         Response response = target.request(MediaType.APPLICATION_JSON)
                 .post(Entity.entity(group1, MediaType.APPLICATION_JSON));
 
         if (response.getStatus() == 201) {
-            System.out.println("Student inserted successfully!");
+            System.out.println("Data inserted successfully!");
         } else {
-            System.out.println("Error inserting student: " + response.getStatus());
+            System.out.println("Error inserting data: " + response.getStatus());
         }
 
         response.close();
@@ -75,10 +74,33 @@ public class CrudBean implements Serializable {
     }
 
     public String updateData() {
-        this.group1Facade.edit(group1);
+//        this.group1Facade.edit(group1);
+        System.out.println("in the bean ");
+        System.out.println("the id in bean " + group1.getId());
+        Client client = ClientBuilder.newClient();
+        WebTarget target = client.target("http://localhost:8080/CRUDExam/app/rest/updateData/" + group1.getId());
+
+        System.out.println("in the bean " + group1.getName());
+
+        Response response = target.request(MediaType.APPLICATION_JSON)
+                .put(Entity.entity(group1, MediaType.APPLICATION_JSON));
+        System.out.println("in the bean " + group1.getName());
+        if (response.getStatus() == 200) {
+            System.out.println("Data updated successfully!");
+        } else {
+            System.out.println("Error updating Data: " + response.getStatus());
+        }
+
+        response.close();
+        client.close();
+
+        this.name = "";
+        this.date = "";
+        this.password = "";
         return "index";
     }
 
+    
     public AbstractFacade getAbstractFacade() {
         return group1Facade;
     }
