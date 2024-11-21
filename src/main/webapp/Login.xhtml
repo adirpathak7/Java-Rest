@@ -1,0 +1,27 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <h:head>
+        <title>Facelet Title</title>
+    </h:head>
+    <h:body>
+        <h1>Login</h1>
+        <f:view>
+            <h:form>
+                <h1>
+                    <h:outputText value="Login"/></h1>
+                <h:panelGrid columns="2">
+
+                    <h:outputLabel value="Name:" for="name" />
+                    <h:inputText id="name" value="#{crudBean.name}" title="Name" required="true" requiredMessage="The Name field is required."/>
+                    <h:outputLabel value="Password:" for="password" />
+                    <h:inputText id="password" value="#{crudBean.password}" title="Password" required="true" requiredMessage="The Password field is required."/>
+                    <h:commandButton action="#{crudBean.login()}" value="Login" />
+                </h:panelGrid>
+            </h:form>
+        </f:view>
+
+    </h:body>
+</html>

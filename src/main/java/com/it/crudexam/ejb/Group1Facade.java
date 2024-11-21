@@ -66,5 +66,5 @@ public class Group1Facade extends AbstractFacade<Group1> {
     public Group1 create(Group1 group1) {
         return super.create(group1); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/OverriddenMethodBody
     }
-
+    
 }

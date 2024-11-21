@@ -14,6 +14,9 @@ import javax.inject.Named;
 import javax.enterprise.context.Dependent;
 import javax.enterprise.context.SessionScoped;
 import javax.inject.Inject;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import javax.persistence.TypedQuery;
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.Entity;
@@ -33,23 +36,22 @@ public class CrudBean implements Serializable {
     @EJB
     private Group1Facade group1Facade;
 
+    @PersistenceContext(unitName = "crudPu")
+    private EntityManager em;
+
     private Group1 group1;
 
     private int id;
     private String name;
     private String password;
     private String date;
+    private Group1 loginUser;
 
     public CrudBean() {
         group1 = new Group1();
     }
 
     public String addData() {
-        System.out.println("Name in Bean: " + group1.getName());
-        System.out.println("Date in Bean: " + group1.getDate());
-        System.out.println("Password in Bean: " + group1.getPassword());
-//        if you are using EJB so un-comment bellow line and comment from line 50 -72
-//        this.group1Facade.create(group1);
         Client client = ClientBuilder.newClient();
         WebTarget target = client.target("http://localhost:8080/CRUDExam/app/rest/add/");
 
@@ -65,7 +67,11 @@ public class CrudBean implements Serializable {
         response.close();
         client.close();
 
-       this.group1 = new Group1();
+        this.group1 = new Group1();
+        this.name = "";
+        this.date = "";
+        this.password = "";
+
         return "Show.xhtml";
     }
 
@@ -131,6 +137,32 @@ public class CrudBean implements Serializable {
         }
 
         return listData;
+    }
+
+    public String login() {
+        try {
+            TypedQuery<Group1> query = em.createQuery(
+                    "SELECT g FROM Group1 g WHERE g.name = :name AND g.password = :password",
+                    Group1.class
+            );
+            query.setParameter("name", name);
+            query.setParameter("password", password);
+
+            loginUser = query.getSingleResult(); // Retrieve the user
+
+            if (loginUser != null) {
+                // Login successful, navigate to the home page or dashboard
+                return "Home.xhtml?faces-redirect=true";
+            }
+        } catch (javax.persistence.NoResultException e) {
+            // No user found with the given credentials
+            System.out.println("Invalid credentials");
+        }
+        return "Login.xhtml"; // Stay on the login page
+    }
+
+    public String logout() {
+        return "Login.xhtml";
     }
 
     public AbstractFacade getAbstractFacade() {

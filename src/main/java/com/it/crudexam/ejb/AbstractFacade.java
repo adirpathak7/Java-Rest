@@ -4,6 +4,7 @@
  */
 package com.it.crudexam.ejb;
 
+import com.it.crudexam.entity.Group1;
 import java.util.List;
 import javax.ejb.Local;
 import javax.ejb.Remote;

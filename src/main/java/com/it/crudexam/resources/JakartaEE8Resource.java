@@ -80,4 +80,5 @@ public class JakartaEE8Resource {
         List<Group1> allGroup1 = abstratFaced.findAll();
         return Response.ok((allGroup1)).build();
     }
+
 }
